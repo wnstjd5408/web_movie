@@ -1,0 +1,9 @@
+{% if movie_list %}
+    <ul>
+    {% for Movie in movie_list%}
+        <li><a href="/main/{{Movie.id}}/">{{Movie.title}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>질문이 없습니다.</p>
+{% endif %}
