@@ -13,7 +13,7 @@ class Movie(models.Model):
     age = models.CharField(max_length=100)
     runningtime = models.CharField(max_length=50)
     content = models.TextField()
-    img = models.ImageField(blank=True, null=True)
+    img = models.ImageField(blank=True, null=True, upload_to="")
 
     def __str__(self):
         return self.title
