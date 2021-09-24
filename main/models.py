@@ -11,6 +11,7 @@ class Movie(models.Model):
     actor = models.CharField(max_length=700)
     genre = models.CharField(max_length=100)
     age = models.CharField(max_length=100)
+    country = models.CharField(max_length=50)
     runningtime = models.CharField(max_length=50)
     content = models.TextField()
     img = models.ImageField(blank=True, null=True, upload_to="")
