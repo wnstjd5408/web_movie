@@ -1,9 +1,27 @@
-{% if movie_list %}
-    <ul>
-    {% for Movie in movie_list%}
-        <li><a href="/main/{{Movie.id}}/">{{Movie.title}}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>질문이 없습니다.</p>
-{% endif %}
+
+{% extends 'base.html' %}
+{% block content %}
+    <table class ="container my-3">
+        <thead>
+        <tr class="thead-dark">
+            <th>번호</th>
+            <th>제목</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if movie_list %}
+        {% for Movie in movie_list%}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td><a href="{% url 'main:detail' Movie.id %}">{{Movie.title}}</a></td>
+        </tr>  
+        {% endfor %}
+        {% else %}
+        <tr>
+            <td colspan="2">질문이 없습니다.</td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

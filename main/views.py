@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Movie
 
 
@@ -17,6 +17,6 @@ def detail(request, movie_id):
     Movie 내용출력
     """
 
-    movie = Movie.objects.get(id=movie_id)
+    movie = get_object_or_404(Movie, id=movie_id)
     context = {'Movie': movie}
     return render(request, 'main/movie_detail.html', context)
