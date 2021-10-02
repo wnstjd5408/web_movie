@@ -5,10 +5,10 @@ from django.db import models
 
 
 class Movie(models.Model):
-    title = models.CharField(max_length=300)
+    title = models.CharField(max_length=100)
     open_movie = models.DateTimeField(null=True)
     director = models.CharField(max_length=300)
-    actor = models.CharField(max_length=700)
+    actor = models.CharField(max_length=500)
     genre = models.CharField(max_length=100)
     age = models.CharField(max_length=100)
     country = models.CharField(max_length=50)
