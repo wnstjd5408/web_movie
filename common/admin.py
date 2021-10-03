@@ -4,4 +4,7 @@ from .models import Person
 
 
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ['user_id']
+    list_display = ['id', 'user_id']
+
+
+admin.site.register(Person, PersonAdmin)

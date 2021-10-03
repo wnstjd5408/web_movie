@@ -9,7 +9,7 @@ class Person(models.Model):
     age = models.IntegerField()
     phone_number = models.CharField(max_length=240)
     email = models.EmailField(max_length=250)
-    address = models.CharField(max_length=300)
+    address = models.CharField(max_length=250)
 
     class Meta:
         db_table = 'person'
