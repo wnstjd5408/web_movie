@@ -55,6 +55,7 @@ class LoginForm(forms.Form):
 
             except exceptions.VerifyMismatchError:
                 return self.add_error('user_pw', '비밀번호가 다릅니다')
+            self.login_session = person.user_id
 
 
 class RegisterForm(forms.ModelForm):
@@ -72,8 +73,8 @@ class RegisterForm(forms.ModelForm):
     ]
 
     class Meta:
-        model = Person
 
+        model = Person
         fields = [
             'user_id',
             'password1',
@@ -84,18 +85,29 @@ class RegisterForm(forms.ModelForm):
             'email',
             'address',
         ]
+        widgets = {
+            'user_id': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '아이디'}),
+            # 'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '비밀번호'}),
+            # 'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '비밀번호 확인'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '이름'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '성별'}),
+            'age': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '나이'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '핸드폰번호'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': '이메일'}),
+            'address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '주소'}),
+        }
+        labels = {
+            'user_id': '아이디',
+            # 'password1': '비밀번호',
+            # 'password2': '비밀번호 확인',
+            'name': '이름',
+            'gender': '성별',
+            'age': '나이',
+            'phone_number': '핸드폰번호',
+            'email': '이메일',
+            'address': '주소',
+        }
 
-    user_id = forms.CharField(
-        label='아이디',
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '아이디'
-            }
-        ),
-        error_messages={'required': '아이디를 입력해주세요'}
-    )
     password1 = forms.CharField(
         label='비밀번호',
         required=True,
@@ -118,72 +130,83 @@ class RegisterForm(forms.ModelForm):
         ),
         error_messages={'required': '비밀번호가 일치하지 않습니다'}
     )
-    name = forms.CharField(
-        label='이름',
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '이름'
-            }
-        ),
-        error_messages={'required': '이름을 입력해주세요'}
-    )
-    gender = forms.CharField(
-        label='성별',
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '성별'
-            }
-        ),
-        error_messages={'required': '성별을 입력해주세요'}
-    )
-    age = forms.IntegerField(
-        label='나이',
-        required=True,
-        widget=forms.NumberInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '나이'
-            }
-        ),
-        error_messages={'required': '나이를 입력해주세요'}
-    )
-    phone_number = forms.CharField(
-        label='핸드폰번호',
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '핸드폰번호'
-            }
-        ),
-        error_messages={'required': '번호를 입력해주세요'}
-    )
-    email = forms.EmailField(
-        label='이메일',
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '이메일'
-            }
-        ),
-        error_messages={'required': '이메일을 입력해주세요'}
-    )
-    address = forms.CharField(
-        label='주소',
-        required=True,
-        widget=forms.TextInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': '주소'
-            }
-        ),
-        error_messages={'required': '주소를 입력해주세요'}
-    )
+    # user_id = forms.CharField(
+    #     label='아이디',
+    #     required=True,
+    #     widget=forms.TextInput(
+    #         attrs={
+    #             'class': 'form-control',
+    #             'placeholder': '아이디'
+    #         }
+    #     ),
+    #     error_messages={'required': '아이디를 입력해주세요'}
+    # )
+    # name = forms.CharField(
+    #     label='이름',
+    #     required=True,
+    #     widget=forms.TextInput(
+    #         attrs={
+    #             'class': 'form-control',
+    #             'placeholder': '이름'
+    #         }
+    #     ),
+    #     error_messages={'required': '이름을 입력해주세요'}
+    # )
+    # gender = forms.CharField(
+    #     label='성별',
+    #     required=True,
+    #     widget=forms.TextInput(
+    #         attrs={
+    #             'class': 'form-control',
+    #             'placeholder': '성별'
+    #         }
+    #     ),
+    #     error_messages={'required': '성별을 입력해주세요'}
+    # )
+    # age = forms.IntegerField(
+    #     label='나이',
+    #     required=True,
+    #     widget=forms.NumberInput(
+    #         attrs={
+    #             'class': 'form-control',
+    #             'placeholder': '나이'
+    #         }
+    #     ),
+    #     error_messages={'required': '나이를 입력해주세요'}
+    # )
+    # phone_number = forms.CharField(
+    #     label='핸드폰번호',
+    #     required=True,
+    #     widget=forms.TextInput(
+    #         attrs={
+    #             'class': 'form-control',
+    #             'placeholder': '핸드폰번호'
+    #         }
+    #     ),
+    #     error_messages={'required': '번호를 입력해주세요'}
+    # )
+    # email = forms.EmailField(
+    #     label='이메일',
+    #     required=True,
+    #     widget=forms.EmailInput(
+    #         attrs={
+    #             'class': 'form-control',
+    #             'placeholder': '이메일'
+    #         }
+    #     ),
+    #     error_messages={'required': '이메일을 입력해주세요'}
+    # )
+    # address = forms.CharField(
+    #     label='주소',
+    #     required=True,
+    #     widget=forms.TextInput(
+    #         attrs={
+    #             'class': 'form-control',
+    #             'placeholder': '주소'
+    #         }
+    #     ),
+    #     error_messages={'required': '주소를 입력해주세요'}
+    # )
 
     # def save(self, *args,  **kwargs):
     #     person = super().save(commit=False)

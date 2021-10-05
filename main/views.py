@@ -6,9 +6,16 @@ def index(request):
     """
     Movie 목록 출력
     """
-
-    movie_list = Movie.objects.order_by('-open_movie')
+    movie_list = Movie.objects.order_by('id')
     context = {'movie_list': movie_list}
+
+    # login_session = request.session.get('login_session', '')
+
+    # if login_session == '':
+    #     context['login_session'] = False
+    # else:
+    #     context['login_session'] = True
+
     return render(request, 'main/movie_list.html', context)
 
 

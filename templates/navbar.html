@@ -1,6 +1,6 @@
 <!-- 네비게이션바 -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-    <a class="navbar-brand" href="{% url 'main:index' %}">CGV</a>
+    <a class="navbar-brand" href="/">CGV</a>
     <button
     class="navbar-toggler ml-auto"
     type="button"
@@ -14,10 +14,18 @@
   </button>
   <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
     <ul class="navbar-nav">
+      {% if request.session.login_session %}
       <li class="nav-item">
-          <a class="nav-link" href="{% url 'common:user_register' %}">회원가입</a>
-         
-        </li>
+        <a class="nav-link" href="{% url 'common:logout' %}">로그아웃</a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'common:login' %}">로그인</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'common:user_register' %}">회원가입</a>
+      </li>
+      {% endif %}
       </ul>
     </div>
   </nav>

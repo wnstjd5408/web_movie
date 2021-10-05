@@ -21,6 +21,8 @@ def login(request):
 
         if loginform.is_valid():
             print('로그인 되었습니다')
+            request.session['login_session'] = loginform.login_session
+            request.session.set_expiry(0)
             return redirect('/')
         else:
             context['forms'] = loginform
@@ -28,6 +30,12 @@ def login(request):
                 for value in loginform.errors.values():
                     context['error'] = value
         return render(request, 'common/user_login.html', context)
+
+
+def logout(request):
+    if request.session.get('login_session'):
+        del(request.session['login_session'])
+    return redirect('/')
 
 
 def user_register(request):
@@ -54,6 +62,7 @@ def user_register(request):
                 address=register_form.address
             )
             person.save()
+
             return redirect('/')
         else:
             context['forms'] = register_form

@@ -14,7 +14,7 @@ class Movie(models.Model):
     country = models.CharField(max_length=50)
     runningtime = models.CharField(max_length=50)
     content = models.TextField()
-    img = models.ImageField(blank=True, null=True, upload_to="")
+    img = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return self.title
