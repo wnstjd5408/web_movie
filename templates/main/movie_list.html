@@ -5,6 +5,7 @@
         <thead>
         <tr class="thead-dark">
             <th>번호</th>
+            <th>이미지</th>
             <th>제목</th>
         </tr>
         </thead>
@@ -13,6 +14,7 @@
         {% for Movie in movie_list%}
         <tr>
             <td>{{forloop.counter}}</td>
+            <td><a href="{% url 'main:detail' Movie.id %}"><img src="{{Movie.img}}" class='img-fluid ' alt="a"></a></td>
             <td><a href="{% url 'main:detail' Movie.id %}">{{Movie.title}}</a></td>
         </tr>  
         {% endfor %}
