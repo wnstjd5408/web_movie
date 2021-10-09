@@ -20,7 +20,6 @@ def login(request):
         loginform = LoginForm(request.POST)
 
         if loginform.is_valid():
-            print('로그인 되었습니다')
             request.session['login_session'] = loginform.login_session
             request.session.set_expiry(0)
             return redirect('/')
@@ -34,7 +33,8 @@ def login(request):
 
 def logout(request):
     if request.session.get('login_session'):
-        del(request.session['login_session'])
+        # del request.session['login_session']
+        request.session.flush()
     return redirect('/')
 
 
@@ -51,18 +51,17 @@ def user_register(request):
     elif request.method == 'POST':
         register_form = RegisterForm(request.POST)
         if register_form.is_valid():
-            person = Person(
-                user_id=register_form.user_id,
-                password=register_form.password1,
-                name=register_form.name,
-                gender=register_form.gender,
-                age=register_form.age,
-                phone_number=register_form.phone_number,
-                email=register_form.email,
-                address=register_form.address
-            )
-            person.save()
-
+            # person = Person(
+            #     user_id=register_form.user_id,
+            #     password=register_form.password1,
+            #     name=register_form.name,
+            #     gender=register_form.gender,
+            #     age=register_form.age,
+            #     phone_number=register_form.phone_number,
+            #     email=register_form.email,
+            #     address=register_form.address
+            # )
+            register_form.save()
             return redirect('/')
         else:
             context['forms'] = register_form

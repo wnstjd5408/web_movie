@@ -90,7 +90,7 @@ class RegisterForm(forms.ModelForm):
             # 'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '비밀번호'}),
             # 'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '비밀번호 확인'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '이름'}),
-            'gender': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '성별'}),
+            'gender': forms.Select(attrs={'class': 'form-control', 'placeholder': '성별'}),
             'age': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': '나이'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '핸드폰번호'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': '이메일'}),
@@ -208,11 +208,12 @@ class RegisterForm(forms.ModelForm):
     #     error_messages={'required': '주소를 입력해주세요'}
     # )
 
-    # def save(self, *args,  **kwargs):
-    #     person = super().save(commit=False)
-    #     password = self.cleaned_data.get('password1')
-
-    #     person.save()
+    def save(self, commit=True):
+        person = super().save(commit=False)
+        person.set_password(self.cleaned_data['password1'])
+        if commit:
+            person.save()
+        return person
 
     def clean(self):
         cleaned_data = super().clean()
@@ -229,6 +230,8 @@ class RegisterForm(forms.ModelForm):
 
         if password1 != password2:
             return self.add_error('password2', '비밀번호가 다릅니다')
+        elif user_id == '':
+            return self.add_error('user_id', '아이디를 입력해 주세요.!!')
         elif not(4 <= len(user_id) <= 16):
             return self.add_error('user_id', '아이디는 4~16자리로 입력해 주세요')
         elif 8 > len(password1):
