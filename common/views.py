@@ -1,103 +1,84 @@
-from django.shortcuts import render, redirect
-from .models import Person
-from argon2 import PasswordHasher
-from .forms import RegisterForm, LoginForm
-# Create your views here.
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import SignupForm, LoginForm, CustomUserChangeForm
+from .models import User
+from .decorators import login_required
+
+
+@login_required
+def delete(request):
+    if request.method == 'POST':
+        request.user.delete()
+        return redirect('index')
+    return render(request, 'common/delete.html')
+
+
+def update(request):
+    context = {}
+    if request.method == 'POST':
+        user_change_form = CustomUserChangeForm(
+            request.POST, instance=request.user)
+        context = {'forms': user_change_form}
+        if user_change_form.is_valid():
+            user_change_form.save()
+            return redirect('common:info', request.user.id)
+    else:
+        user_change_form = CustomUserChangeForm(instance=request.user)
+        context = {'forms': user_change_form}
+    return render(request, 'common/update.html', context)
+
+
+def info(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    context = {'User': user}
+    return render(request, 'common/info.html', context)
 
 
 def login(request):
-    """
-    로그인
-    """
     loginform = LoginForm()
     context = {'forms': loginform}
 
-    if request.method == 'GET':
-        return render(request, 'common/user_login.html', context)
+    if request.user.is_authenticated:
+        return redirect('/')
 
-    elif request.method == 'POST':
+    if request.method == "GET":
+        return render(request, "common/user_login.html", context)
 
-        loginform = LoginForm(request.POST)
+    elif request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = request.POST['email']
+            password = request.POST['password']
+            user = authenticate(email=email, password=password)
+            auth_login(request, user)
+            return redirect('main:index')
 
-        if loginform.is_valid():
-            request.session['login_session'] = loginform.login_session
-            request.session.set_expiry(0)
-            return redirect('/')
         else:
-            context['forms'] = loginform
-            if loginform.errors:
-                for value in loginform.errors.values():
-                    context['error'] = value
-        return render(request, 'common/user_login.html', context)
+            print('인증실패')
+    return render(request, "common/user_login.html", context)
 
 
 def logout(request):
-    if request.session.get('login_session'):
-        # del request.session['login_session']
-        request.session.flush()
+
+    auth_logout(request)
     return redirect('/')
 
 
-def user_register(request):
+def signup(request):
     """
     회원가입
     """
+    context = {}
 
-    register_form = RegisterForm()
-    context = {'forms': register_form}
-
-    if request.method == 'GET':
-        return render(request, 'common/user_register.html', context)
-    elif request.method == 'POST':
-        register_form = RegisterForm(request.POST)
-        if register_form.is_valid():
-            # person = Person(
-            #     user_id=register_form.user_id,
-            #     password=register_form.password1,
-            #     name=register_form.name,
-            #     gender=register_form.gender,
-            #     age=register_form.age,
-            #     phone_number=register_form.phone_number,
-            #     email=register_form.email,
-            #     address=register_form.address
-            # )
-            register_form.save()
+    if request.method == "POST":
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(email=email, password=password)
+            auth_login(request, user)  # 로그인
             return redirect('/')
-        else:
-            context['forms'] = register_form
-            if register_form.errors:
-                for value in register_form.errors.values():
-                    context['error'] = value
-        return render(request, 'common/user_register.html', context)
-    # if request.method == 'GET':
-    #     return render(request, 'common/user_register.html')
-
-    # elif request.method == 'POST':
-    #     user_id = request.POST.get('user_id', '')
-    #     password1 = request.POST.get('password1', '')
-    #     password2 = request.POST.get('password2', '')
-    #     username = request.POST.get('username', '')
-    #     gender = request.POST.get('gender', '')
-    #     email = request.POST.get('email', '')
-    #     age = request.POST.get('age', '')
-    #     phone_number = request.POST.get('phone_number', '')
-    #     address = request.POST.get('address', '')
-
-    #     if(user_id or password1 or password2 or username or gender or email or phone_number or address) == '':
-    #         return redirect('/common/user_register.html')
-    #     elif password1 != password2:
-    #         return redirect('/common/user_register.html')
-    #     else:
-    #         person = Person(
-    #             user_id=user_id,
-    #             password=password1,
-    #             name=username,
-    #             gender=gender,
-    #             age=age,
-    #             phone_number=phone_number,
-    #             email=email,
-    #             address=address
-
-    #         )
-    #         person.save()
-    #     return redirect('/')
+    else:
+        form = SignupForm()
+    return render(request, 'common/signup.html', {'forms': form})

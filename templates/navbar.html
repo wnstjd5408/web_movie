@@ -14,16 +14,19 @@
   </button>
   <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
     <ul class="navbar-nav">
-      {% if request.session.login_session %}
+      {% if user.is_authenticated %}
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'common:logout' %}">로그아웃</a>
+        <a class="nav-link" href="{% url 'common:info' user.id %}">My Page</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'common:logout' %}">{{user.name}}(로그아웃)</a>
       </li>
       {% else %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'common:login' %}">로그인</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'common:user_register' %}">회원가입</a>
+        <a class="nav-link" href="{% url 'common:signup' %}">회원가입</a>
       </li>
       {% endif %}
       </ul>
