@@ -31,8 +31,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'main.apps.MainConfig',
-    'common.apps.CommonConfig',
+    'main',
+    'common',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,12 +78,12 @@ WSGI_APPLICATION = 'movie.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'python_movie',
+        'NAME': 'reservation',
         'USER': 'root',
-        'PASSWORD': '******',
+        'PASSWORD': '*****',
         'HOST': 'localhost',
         'PORT': '3306',
-        'OPTIONS': {'charset': 'utf8mb4', }
+        'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
 
@@ -106,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+AUTH_USER_MODEL = 'common.User'
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -130,7 +130,13 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# LOGIN_REDIRECT_URL = '/'
+# LOGOUT_REDIRECT_URL = '/'
+
+Email_BACKEND = 'django.core.mail.backends.console.EmailBackend'

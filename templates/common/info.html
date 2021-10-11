@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}<title>My Page</title>{% endblock %}
+{% block content %}
+
+<h1>{{User.id}}</h1>
+<ul>
+    <li><p>{{User.name}}</p></li>
+    <li><p>{{User.email}}</p></li>
+    <li><p>{{User.phone_number}}</p></li>
+    <li><p>{{User.address}}</p></li>
+</ul>
+<a href ="{% url 'common:update' %}" type="button" class="btn btn-primary">수정</a>
+<a href = "{% url 'common:delete' %}" type="button" class="btn btn-primary">삭제</a>
+
+{%endblock%}
