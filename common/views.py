@@ -1,18 +1,39 @@
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib import messages
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import SignupForm, LoginForm, CustomUserChangeForm
 from .models import User
-from .decorators import login_required
+from django.contrib.auth.decorators import login_required
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, '비밀번호가 변경되었습니다')
+            return redirect('/')
+        else:
+            messages.error(request, "에러 : 비밀번호가 변경이 안됐습니다")
+    else:
+        form = PasswordChangeForm(request.user)
+        context = {'forms': form}
+    return render(request, 'common/change_password.html', context)
 
 
 @login_required
 def delete(request):
     if request.method == 'POST':
-        request.user.delete()
-        return redirect('index')
-    return render(request, 'common/delete.html')
+        if request.user.is_authenticated:
+            request.user.delete()
+            auth_logout(request)
+    return redirect('main:index')
 
 
+@login_required
 def update(request):
     context = {}
     if request.method == 'POST':

@@ -19,7 +19,7 @@
         </div> -->
         <div class="form-group">
             <label for="name">이름</label>
-            <input type="text" class="form-control" name="name" value="{{form.name.value|default_if_none:'' }}">
+            <input type="text" class="form-control" name="name" value="{{user.name}}">
         </div>
         <div class="form-group">
             <label for="gender">성별</label>
@@ -45,6 +45,13 @@
         </div>
        
         <button type="submit" class="btn btn-primary">수정하기</button>
+      
+    </form>
+</br>
+    <form method="post" action ="{% url 'common:delete' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">삭제하기</button>
+
     </form>
 </div>
 {% endblock %}
