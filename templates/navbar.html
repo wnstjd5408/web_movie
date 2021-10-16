@@ -1,6 +1,6 @@
 <!-- 네비게이션바 -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-    <a class="navbar-brand" href="/">CGV</a>
+    <a class="navbar-brand"style=" color: #e71a0f;" href="/"><strong>CGV</strong></a>
     <button
     class="navbar-toggler ml-auto"
     type="button"
@@ -14,12 +14,13 @@
   </button>
   <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
     <ul class="navbar-nav">
+
       {% if user.is_authenticated %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'common:info' user.id %}">My Page</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'common:logout' %}">{{user.name}}(로그아웃)</a>
+        <a class="nav-link" href="javascript:void(0)" onclick="confirmLogout();">{{user.name}}(로그아웃)</a>
       </li>
       {% else %}
       <li class="nav-item">
@@ -29,7 +30,16 @@
         <a class="nav-link" href="{% url 'common:signup' %}">회원가입</a>
       </li>
       {% endif %}
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'main:reservation' %}">영화예약</a>
+      </li>
       </ul>
     </div>
   </nav>
-  
+  <script type="text/javascript">
+     function confirmLogout(){
+       if(confirm("정말 로그아웃 하시겠습니까?")){
+         location.href="{% url 'common:logout' %}"
+       }
+     }
+  </script>

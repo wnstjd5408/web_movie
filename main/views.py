@@ -2,6 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from .models import Movie
 
 
+def reservation(request):
+    movie_list = Movie.objects.order_by('id')
+    context = {'movie_list': movie_list}
+    return render(request, 'main/movie_reservation.html', context)
+
+
 def index(request):
     """
     Movie 목록 출력

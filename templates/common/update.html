@@ -48,10 +48,17 @@
       
     </form>
 </br>
-    <form method="post" action ="{% url 'common:delete' %}">
+    <form method="get" action ="{% url 'common:profile_delete_view' %}">
         {% csrf_token %}
-        <button type="submit" class="btn btn-primary">삭제하기</button>
+        <button type="submit" class="btn btn-danger">삭제하기</button>
 
     </form>
 </div>
 {% endblock %}
+<script type="text/javascript">
+    function confirmDelete(){
+      if(confirm("정말 탈퇴 하시겠습니까?")){
+        location.href="{% url 'common:delete' %}"
+      }
+    }
+ </script>

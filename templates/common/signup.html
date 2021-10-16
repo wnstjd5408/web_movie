@@ -15,24 +15,24 @@
         {% include "form_errors.html" %}
         <div class="form-group">
             <label for="email">이메일</label>
-            <input type="email" class="form-control" name="email" value="{{form.email.value|default_if_none:'' }}">
+            <input type="email" class="form-control" id="email" name="email" value="{{forms.email.value|default_if_none:'' }}">
         </div>
         <div class="form-group">
             <label for="password1">비밀번호</label>
-            <input type="password" class="form-control" name="password1" value="{{form.password1.value|default_if_none:'' }}" >
+            <input type="password" class="form-control" id="password1" name="password1" value="{{forms.password1.value|default_if_none:'' }}" >
         </div>
         <div class="form-group">
             <label for="password2">비밀번호 확인</label>
-            <input type="password"class="form-control" name="password2" value="{{form.password2.value|default_if_none:'' }}">
+            <input type="password"class="form-control" id="password2" name="password2" value="{{forms.password2.value|default_if_none:'' }}">
         </div>
         <div class="form-group">
             <label for="name">이름</label>
-            <input type="text" class="form-control" name="name" value="{{form.name.value|default_if_none:'' }}">
+            <input type="text" class="form-control" id="name" name="name" value="{{forms.name.value|default_if_none:'' }}">
         </div>
         <div class="form-group">
             <label for="gender">성별</label>
             <!-- <input type="text" class="form-control" name="name" value="{{form.gender.value|default_if_none:'' }}"> -->
-            <select name="gender" class="form-control" aria-label="form-select-sm example">
+            <select  id = "gender" name="gender" class="form-control" aria-label="form-select-sm example">
                 <option selected>성별을 고르시오</option>
                 <option value="male">남</option>
                 <option value="female">여</option>
@@ -40,16 +40,16 @@
         </div>
         <div class="form-group">
             <label for="age">나이</label>
-            <input type="number" class="form-control" name="age" value="{{form.age.value|default_if_none:'' }}">
+            <input type="number" min=1 class="form-control" id="age" name="age" value="{{forms.age.value|default_if_none:'' }}">
         </div>
         <div class="form-group">
             <label for="phone_number">핸드폰번호</label>
-            <input type="text" class="form-control" name="phone_number" value="{{form.phone_number.value|default_if_none:'' }}">
+            <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{forms.phone_number.value|default_if_none:'' }}">
         </div>
 
         <div class="form-group">
             <label for="address">주소</label>
-            <input type="text" class="form-control" name="address">
+            <input type="text" class="form-control" id="address" name="address" value="{{forms.address.value|default_if_none:'' }}">
         </div>
        
         <button type="submit" class="btn btn-primary">생성하기</button>

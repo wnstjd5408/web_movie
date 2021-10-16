@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}<title>영화 예약</title>{% endblock %}
+{% block content %}
+
+<ul>
+    {% for movie in movie_list %}
+    <li>{{movie.age}} &nbsp;{{movie.title}} </li>
+    {% endfor %}
+</ul>
+
+
+{% endblock %}

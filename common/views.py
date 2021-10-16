@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import SignupForm, LoginForm, CustomUserChangeForm
+from .forms import SignupForm, LoginForm, CustomUserChangeForm, CheckPasswordForm
 from .models import User
 from django.contrib.auth.decorators import login_required
 
@@ -25,16 +25,29 @@ def change_password(request):
 
 
 @login_required
-def delete(request):
+def profile_delete_view(request):
+    """
+    회원정보 삭제
+    """
     if request.method == 'POST':
-        if request.user.is_authenticated:
+        password_form = CheckPasswordForm(request.user, request.POST)
+
+        if password_form.is_valid():
             request.user.delete()
             auth_logout(request)
-    return redirect('main:index')
+            messages.success(request, "회원탈퇴가 완료되었습니다.")
+            return redirect('/')
+    else:
+        password_form = CheckPasswordForm(request.user)
+        context = {'forms': password_form}
+    return render(request, 'common/delete.html', context)
 
 
 @login_required
 def update(request):
+    """
+    회원정보 수정
+    """
     context = {}
     if request.method == 'POST':
         user_change_form = CustomUserChangeForm(
@@ -50,37 +63,42 @@ def update(request):
 
 
 def info(request, user_id):
+    """
+    회원정보창 정보 보여주기
+    """
     user = get_object_or_404(User, id=user_id)
     context = {'User': user}
     return render(request, 'common/info.html', context)
 
 
 def login(request):
-    loginform = LoginForm()
-    context = {'forms': loginform}
-
+    """
+    로그인
+    """
+    # loginform = LoginForm()
+    # context = {'forms': loginform}
+    context = {}
     if request.user.is_authenticated:
         return redirect('/')
 
-    if request.method == "GET":
-        return render(request, "common/user_login.html", context)
-
-    elif request.method == "POST":
+    if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
             email = request.POST['email']
             password = request.POST['password']
             user = authenticate(email=email, password=password)
-            auth_login(request, user)
+            auth_login(request, user)  # 로그인
             return redirect('main:index')
-
-        else:
-            print('인증실패')
+    else:
+        loginform = LoginForm()
+        context = {"forms": loginform}
     return render(request, "common/user_login.html", context)
 
 
 def logout(request):
-
+    """
+    로그아웃
+    """
     auth_logout(request)
     return redirect('/')
 

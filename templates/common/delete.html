@@ -1,9 +1,33 @@
-{% extends 'base.html' %} {% block container %}
-
-<h1>User Delete</h1>
-<form method="POST">
+{% extends 'base.html' %} 
+{% block content %}
+<h3 class="text-center">회원 삭제</h3>
+{% csrf_token %}
+<div class="container my-3">
+  <div class="card-header text-center">
+  <p><strong>{{user.email}}</strong> 계정이 삭제 됩니다.<br> 탈퇴시 개인정보 및 이용정보가 삭제되며 복구 할 수 없습니다.</p>
+</div>
+</div>
+<div class="container my-3">
+<form method="POST" class="form-horizontal" action ="{% url 'common:profile_delete_view' %}">
   {% csrf_token %}
-  <p>정말 탈퇴하시겠습니까?</p>
-  <input type="submit" value="탈퇴" />
+  <div class="form-group">
+      <label for="password">비밀번호</label>
+      <input type="password" class="form-control" id="password" name="password">
+  </div>
+  <label>
+    <input type="checkbox" name="ck" onClick="checkDisable(this.form)">
+    <span style="color:#d14040f2; font-weight: bold;">유의사항 동의 &nbsp;</span>
+  </label>
+  <button type="submit" class="btn btn-danger" name=bt disabled=True>삭제하기</button>
 </form>
+</div>
+<script type="text/javascript">
+  function checkDisable(form) {
+      if (form.ck.checked == true) {
+          form.bt.disabled = false;
+      } else {
+          form.bt.disabled = true;
+      }
+  }
+</script>
 {% endblock %}
