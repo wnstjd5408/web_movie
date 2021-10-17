@@ -24,12 +24,16 @@ class CheckPasswordForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        password = cleaned_data.get('password')
+        password = cleaned_data.get('password', '')
         confirm_password = self.user.password
 
         if password:
             if not check_password(password, confirm_password):
                 self.add_error('password', '비밀번호가 일치하지 않습니다')
+            # else:
+            #     self.user.password = password
+        else:
+            return self.add_error('password', '비밀번호를 입력해 주세요.!!')
 
 
 class SignupForm(UserCreationForm):

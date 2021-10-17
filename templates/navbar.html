@@ -20,7 +20,11 @@
         <a class="nav-link" href="{% url 'common:info' user.id %}">My Page</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="javascript:void(0)" onclick="confirmLogout();">{{user.name}}(로그아웃)</a>
+        <a class="nav-link" href="javascript:void(0);" onclick="confirmLogout()">{{user.name}}(로그아웃)</a>
+        <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">
+          {{user.name}}(로그아웃)
+        </button> -->
+        
       </li>
       {% else %}
       <li class="nav-item">
@@ -36,10 +40,33 @@
       </ul>
     </div>
   </nav>
+
+  <!-- <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+
   <script type="text/javascript">
-     function confirmLogout(){
-       if(confirm("정말 로그아웃 하시겠습니까?")){
-         location.href="{% url 'common:logout' %}"
-       }
-     }
+    function confirmLogout(){
+      if(confirm("정말 로그아웃 하시겠습니까?")){
+        location.href="{% url 'common:logout' %}"
+      }
+    }
   </script>
+
+ 

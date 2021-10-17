@@ -21,6 +21,7 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
         context = {'forms': form}
+
     return render(request, 'common/change_password.html', context)
 
 
@@ -39,6 +40,7 @@ def profile_delete_view(request):
             return redirect('/')
     else:
         password_form = CheckPasswordForm(request.user)
+        print(password_form)
         context = {'forms': password_form}
     return render(request, 'common/delete.html', context)
 
