@@ -6,7 +6,7 @@ from . import views
 app_name = 'main'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.IndexView.as_view(), name='index'),
     path('<int:movie_id>/', views.detail, name='detail'),
     path('reservation/', views.reservation, name='reservation'),
 ]
